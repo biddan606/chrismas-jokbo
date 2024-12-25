@@ -36,7 +36,7 @@ class CreatePersonServiceTest {
                 .firstName("Wonwoo")
                 .lastName("Yu")
                 .sex("남성")
-                .birthday("1996-06-06")
+                .birthdate("1996-06-06")
                 .createPersonFeatures(List.of(featureCommand1, featureCommand2))
                 .build();
 
@@ -53,8 +53,8 @@ class CreatePersonServiceTest {
                                     .isEqualTo(command.lastName());
                             Assertions.assertThat(person.getSex().getDescription())
                                     .isEqualTo(command.sex());
-                            Assertions.assertThat(person.getBirthday().getDate())
-                                    .isEqualTo(command.birthday());
+                            Assertions.assertThat(person.getBirthdate().getDate())
+                                    .isEqualTo(command.birthdate());
                         }
                 );
     }

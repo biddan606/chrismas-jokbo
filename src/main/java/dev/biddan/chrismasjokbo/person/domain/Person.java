@@ -47,23 +47,23 @@ public class Person {
 
     @Column(nullable = false)
     @Embedded
-    private Birthday birthday;
+    private Birthdate birthdate;
 
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private final List<PersonFeature> features = new ArrayList<>();
 
     @Builder
-    public Person(String firstName, String lastName, SexType sex, Birthday birthday) {
+    public Person(String firstName, String lastName, SexType sex, Birthdate birthdate) {
         Assert.hasText(firstName, "firstName이 비어있습니다.");
         Assert.hasText(lastName, "firstName이 비어있습니다.");
         Assert.notNull(sex, "성별이 비어있습니다.");
-        Assert.notNull(birthday, "생년월일이 비어있습니다.");
+        Assert.notNull(birthdate, "생년월일이 비어있습니다.");
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
-        this.birthday = birthday;
+        this.birthdate = birthdate;
     }
 
     public void addFeature(PersonFeature newPersonFeature) {
@@ -103,14 +103,14 @@ public class Person {
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
-    public static class Birthday {
+    public static class Birthdate {
 
         private static final String REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
         private static final Pattern PATTERN = Pattern.compile(REGEX);
 
         private String date;
 
-        public Birthday(String date) {
+        public Birthdate(String date) {
             Assert.hasText(date, "생년월일이 비어있습니다.");
             if (!PATTERN.matcher(date).matches()) {
                 throw new IllegalArgumentException(
