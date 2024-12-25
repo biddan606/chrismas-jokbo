@@ -4,7 +4,6 @@ import dev.biddan.chrismasjokbo.person.domain.Person;
 import dev.biddan.chrismasjokbo.person.domain.Person.PersonFeature;
 import dev.biddan.chrismasjokbo.person.feature.createperson.CreatePersonService.CreatePersonCommand.CreatePersonFeatureCommand;
 import dev.biddan.chrismasjokbo.person.repository.PersonRepository;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +47,7 @@ public class CreatePersonService {
                 String name,
                 String description
         ) {
+
         }
     }
 }
