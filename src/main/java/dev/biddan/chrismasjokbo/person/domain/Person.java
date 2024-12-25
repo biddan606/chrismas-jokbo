@@ -2,7 +2,11 @@ package dev.biddan.chrismasjokbo.person.domain;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,10 +17,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.Assert;
 
 @Entity
 @Table(name = "people")
@@ -29,16 +35,30 @@ public class Person {
     @Column(name = "person_id")
     private Long id;
 
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private SexType sex;
+
+    @Column(nullable = false)
+    @Embedded
+    private PhoneNumber phoneNumber;
+
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private final List<PersonFeature> features = new ArrayList<>();
 
     @Builder
-    public Person(String firstName, String lastName) {
+    public Person(String firstName, String lastName, SexType sex, PhoneNumber phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.sex = sex;
+        this.phoneNumber = phoneNumber;
     }
 
     public void addFeature(PersonFeature newPersonFeature) {
@@ -72,6 +92,25 @@ public class Person {
 
         public void setPerson(Person person) {
             this.person = person;
+        }
+    }
+
+    @Embeddable
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Getter
+    public static class PhoneNumber {
+
+        private static final String regex = "^010-\\d{4}-\\d{4}$";
+        private static final Pattern phoneNumberPattern = Pattern.compile(regex);
+
+        private String number;
+
+        public PhoneNumber(String number) {
+            Assert.hasText(number, "휴대번호가 비어있습니다.");
+            if (!phoneNumberPattern.matcher(number).matches()) {
+                throw new IllegalArgumentException("잘못된 휴대번호 형식입니다: " + number);
+            }
+            this.number = number;
         }
     }
 }
