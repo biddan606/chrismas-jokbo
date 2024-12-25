@@ -2,7 +2,10 @@ package dev.biddan.chrismasjokbo.person.feature.findpeople;
 
 import dev.biddan.chrismasjokbo.person.domain.Person;
 import dev.biddan.chrismasjokbo.person.domain.Person.Birthdate;
+import dev.biddan.chrismasjokbo.person.domain.Person.PersonFeature;
+import dev.biddan.chrismasjokbo.person.feature.PersonInfo;
 import dev.biddan.chrismasjokbo.person.repository.PersonRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,7 @@ public class FindPeopleService {
     public FindPeopleInfo findByNameAndBirthdate(FindPeopleQuery query) {
         List<Person> people = personRepository.findByFirstNameAndLastNameAndBirthdate(
                 query.firstName, query.lastName, new Birthdate(query.birthdate));
-        return new FindPeopleInfo(people);
+        return FindPeopleInfo.from(people);
     }
 
     @Builder
@@ -31,7 +34,15 @@ public class FindPeopleService {
 
     }
 
-    public record FindPeopleInfo(List<Person> people) {
+    public record FindPeopleInfo(List<PersonInfo> people) {
 
+        public static FindPeopleInfo from(List<Person> people) {
+            List<PersonInfo> Infos = new ArrayList<>();
+
+            for (Person person : people) {
+                Infos.add(PersonInfo.of(person));
+            }
+            return new FindPeopleInfo(Infos);
+        }
     }
 }
