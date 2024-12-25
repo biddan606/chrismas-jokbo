@@ -23,7 +23,7 @@ public class CreatePersonService {
         Person newPerson = Person.builder()
                 .firstName(command.firstName)
                 .lastName(command.lastName)
-                .sex(SexType.FEMALE)
+                .sex(SexType.fromDescription(command.sex))
                 .phoneNumber(new PhoneNumber("010-1111-1111"))
                 .build();
 
@@ -43,6 +43,8 @@ public class CreatePersonService {
     public record CreatePersonCommand(
             String firstName,
             String lastName,
+            String sex,
+            String phoneNumber,
             List<CreatePersonFeatureCommand> createPersonFeatures
     ) {
 

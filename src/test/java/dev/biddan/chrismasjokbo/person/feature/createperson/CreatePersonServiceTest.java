@@ -1,7 +1,5 @@
 package dev.biddan.chrismasjokbo.person.feature.createperson;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import dev.biddan.chrismasjokbo.person.feature.createperson.CreatePersonService.CreatePersonCommand;
 import dev.biddan.chrismasjokbo.person.feature.createperson.CreatePersonService.CreatePersonCommand.CreatePersonFeatureCommand;
 import dev.biddan.chrismasjokbo.person.repository.PersonRepository;
@@ -25,29 +23,27 @@ class CreatePersonServiceTest {
 
     @DisplayName("개인 정보를 등록한다")
     @Test
-    void success() {
+    void create_success() {
         CreatePersonFeatureCommand featureCommand1 = CreatePersonFeatureCommand.builder()
-                .name("성별")
-                .description("남자")
-                .build();
-        CreatePersonFeatureCommand featureCommand2 = CreatePersonFeatureCommand.builder()
                 .name("거주지")
                 .description("산본")
                 .build();
-        CreatePersonFeatureCommand featureCommand3 = CreatePersonFeatureCommand.builder()
+        CreatePersonFeatureCommand featureCommand2 = CreatePersonFeatureCommand.builder()
                 .name("취미")
                 .description("축구")
                 .build();
         CreatePersonCommand command = CreatePersonCommand.builder()
                 .firstName("Wonwoo")
                 .lastName("Yu")
-                .createPersonFeatures(List.of(featureCommand1, featureCommand2, featureCommand3))
+                .sex("남성")
+                .phoneNumber("010-3333-5555")
+                .createPersonFeatures(List.of(featureCommand1, featureCommand2))
                 .build();
 
         Long newPersonId = createPersonService.create(command);
 
         Assertions.assertThat(personRepository.findById(newPersonId)).isPresent();
         Assertions.assertThat(personRepository.findById(newPersonId).get().getFeatures())
-                .size().isEqualTo(3);
+                .size().isEqualTo(2);
     }
 }

@@ -55,6 +55,11 @@ public class Person {
 
     @Builder
     public Person(String firstName, String lastName, SexType sex, PhoneNumber phoneNumber) {
+        Assert.hasText(firstName, "firstName이 비어있습니다.");
+        Assert.hasText(lastName, "firstName이 비어있습니다.");
+        Assert.notNull(sex, "성별이 비어있습니다.");
+        Assert.notNull(phoneNumber, "휴대번호가 비어있습니다.");
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
