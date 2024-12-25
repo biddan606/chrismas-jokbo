@@ -1,8 +1,8 @@
 package dev.biddan.chrismasjokbo.person.feature.createperson;
 
 import dev.biddan.chrismasjokbo.person.domain.Person;
+import dev.biddan.chrismasjokbo.person.domain.Person.Birthday;
 import dev.biddan.chrismasjokbo.person.domain.Person.PersonFeature;
-import dev.biddan.chrismasjokbo.person.domain.Person.PhoneNumber;
 import dev.biddan.chrismasjokbo.person.domain.SexType;
 import dev.biddan.chrismasjokbo.person.feature.createperson.CreatePersonService.CreatePersonCommand.CreatePersonFeatureCommand;
 import dev.biddan.chrismasjokbo.person.repository.PersonRepository;
@@ -24,7 +24,7 @@ public class CreatePersonService {
                 .firstName(command.firstName)
                 .lastName(command.lastName)
                 .sex(SexType.fromDescription(command.sex))
-                .phoneNumber(new PhoneNumber("010-1111-1111"))
+                .birthday(new Birthday(command.birthday))
                 .build();
 
         for (CreatePersonFeatureCommand personFeatureCommand : command.createPersonFeatures) {
@@ -44,7 +44,7 @@ public class CreatePersonService {
             String firstName,
             String lastName,
             String sex,
-            String phoneNumber,
+            String birthday,
             List<CreatePersonFeatureCommand> createPersonFeatures
     ) {
 

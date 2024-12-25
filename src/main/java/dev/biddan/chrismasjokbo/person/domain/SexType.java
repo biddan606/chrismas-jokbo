@@ -1,5 +1,8 @@
 package dev.biddan.chrismasjokbo.person.domain;
 
+import lombok.Getter;
+
+@Getter
 public enum SexType {
     MALE("남성"),
     FEMALE("여성"),

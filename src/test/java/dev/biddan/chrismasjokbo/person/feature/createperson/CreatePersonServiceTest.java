@@ -36,14 +36,26 @@ class CreatePersonServiceTest {
                 .firstName("Wonwoo")
                 .lastName("Yu")
                 .sex("남성")
-                .phoneNumber("010-3333-5555")
+                .birthday("1996-06-06")
                 .createPersonFeatures(List.of(featureCommand1, featureCommand2))
                 .build();
 
         Long newPersonId = createPersonService.create(command);
 
-        Assertions.assertThat(personRepository.findById(newPersonId)).isPresent();
-        Assertions.assertThat(personRepository.findById(newPersonId).get().getFeatures())
-                .size().isEqualTo(2);
+        Assertions.assertThat(personRepository.findById(newPersonId))
+                .isPresent()
+                .hasValueSatisfying(person -> {
+                            Assertions.assertThat(person.getFeatures())
+                                    .hasSize(2);
+                            Assertions.assertThat(person.getFirstName())
+                                    .isEqualTo(command.firstName());
+                            Assertions.assertThat(person.getLastName())
+                                    .isEqualTo(command.lastName());
+                            Assertions.assertThat(person.getSex().getDescription())
+                                    .isEqualTo(command.sex());
+                            Assertions.assertThat(person.getBirthday().getDate())
+                                    .isEqualTo(command.birthday());
+                        }
+                );
     }
 }

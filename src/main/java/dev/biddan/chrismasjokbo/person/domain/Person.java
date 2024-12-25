@@ -47,23 +47,23 @@ public class Person {
 
     @Column(nullable = false)
     @Embedded
-    private PhoneNumber phoneNumber;
+    private Birthday birthday;
 
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private final List<PersonFeature> features = new ArrayList<>();
 
     @Builder
-    public Person(String firstName, String lastName, SexType sex, PhoneNumber phoneNumber) {
+    public Person(String firstName, String lastName, SexType sex, Birthday birthday) {
         Assert.hasText(firstName, "firstName이 비어있습니다.");
         Assert.hasText(lastName, "firstName이 비어있습니다.");
         Assert.notNull(sex, "성별이 비어있습니다.");
-        Assert.notNull(phoneNumber, "휴대번호가 비어있습니다.");
+        Assert.notNull(birthday, "생년월일이 비어있습니다.");
 
         this.firstName = firstName;
         this.lastName = lastName;
         this.sex = sex;
-        this.phoneNumber = phoneNumber;
+        this.birthday = birthday;
     }
 
     public void addFeature(PersonFeature newPersonFeature) {
@@ -103,19 +103,22 @@ public class Person {
     @Embeddable
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @Getter
-    public static class PhoneNumber {
+    public static class Birthday {
 
-        private static final String regex = "^010-\\d{4}-\\d{4}$";
-        private static final Pattern phoneNumberPattern = Pattern.compile(regex);
+        private static final String REGEX = "^\\d{4}-\\d{2}-\\d{2}$";
+        private static final Pattern PATTERN = Pattern.compile(REGEX);
 
-        private String number;
+        private String date;
 
-        public PhoneNumber(String number) {
-            Assert.hasText(number, "휴대번호가 비어있습니다.");
-            if (!phoneNumberPattern.matcher(number).matches()) {
-                throw new IllegalArgumentException("잘못된 휴대번호 형식입니다: " + number);
+        public Birthday(String date) {
+            Assert.hasText(date, "생년월일이 비어있습니다.");
+            if (!PATTERN.matcher(date).matches()) {
+                throw new IllegalArgumentException(
+                        "잘못된 생년월일 형식입니다: " + date +
+                        "%n생년월일 형식은 xxxx-xx-xx입니다.");
             }
-            this.number = number;
+
+            this.date = date;
         }
     }
 }

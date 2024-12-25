@@ -45,7 +45,7 @@ class CreatePersonApiControllerTest {
                         }
                     ],
                     "sex": "남성",
-                    "phoneNumber": "010-3333-5555"
+                    "birth_day": "1996-06-06"
                 }
                 """;
         Long expectedNewPersonId = 123L;
